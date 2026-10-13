@@ -611,33 +611,50 @@
       color: var(--inv)
     }
 
-    .pc .chips span,
-    .pc .chips .live-pill {
+    .pc .chips span {
       border-color: currentColor;
       font-size: .75rem;
       padding: 3px 10px
     }
 
-    .pc .chips .live-pill {
-      border: 1px solid currentColor;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: .3s
-    }
-
-    .pc .chips .live-pill:hover {
-      background: var(--fg);
-      color: var(--inv)
-    }
-
-    .pc:hover .chips span:hover,
-    .pc:hover .chips .live-pill:hover {
+    .pc:hover .chips span:hover {
       background: var(--inv);
       color: var(--fg)
+    }
+
+    .pc-act {
+      margin-top: 20px
+    }
+
+    .pc-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 24px;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      font-size: .92rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: inherit;
+      background: color-mix(in srgb, currentColor 8%, transparent);
+      transition: background .3s, color .3s, transform .25s, box-shadow .25s
+    }
+
+    .pc-live:hover {
+      background: var(--fg);
+      color: var(--inv);
+      transform: translateY(-2px)
+    }
+
+    .pc:hover .pc-live {
+      background: color-mix(in srgb, currentColor 14%, transparent)
+    }
+
+    .pc:hover .pc-live:hover {
+      background: var(--inv);
+      color: var(--fg);
+      transform: translateY(-2px)
     }
 
     .arr {
@@ -1381,7 +1398,7 @@
       }
     ];
 
-    $("#pj").innerHTML = P.map((p, i) => `<div class="pc rv" data-i="${i}" tabindex="0" role="button"><div class="n">${p.n}</div><div><h3>${p.t}</h3><p>${p.d}</p><div class="chips">${p.tags.map(t => `<span>${t}</span>`).join("")}${p.live ? `<a class="live-pill" href="${p.live}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Live Demo ↗</a>` : ''}</div></div><div class="arr">→</div></div>`).join("");
+    $("#pj").innerHTML = P.map((p, i) => `<div class="pc rv" data-i="${i}" tabindex="0" role="button"><div class="n">${p.n}</div><div><h3>${p.t}</h3><p>${p.d}</p><div class="chips">${p.tags.map(t => `<span>${t}</span>`).join("")}</div>${p.live ? `<div class="pc-act"><a class="pc-live" href="${p.live}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Live Demo ↗</a></div>` : ''}</div><div class="arr">→</div></div>`).join("");
 
     const modal = $("#modal"), mb = $("#mb");
     function openP(i) {
