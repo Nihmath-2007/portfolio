@@ -611,13 +611,31 @@
       color: var(--inv)
     }
 
-    .pc .chips span {
+    .pc .chips span,
+    .pc .chips .live-pill {
       border-color: currentColor;
       font-size: .75rem;
       padding: 3px 10px
     }
 
-    .pc:hover .chips span:hover {
+    .pc .chips .live-pill {
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: .3s
+    }
+
+    .pc .chips .live-pill:hover {
+      background: var(--fg);
+      color: var(--inv)
+    }
+
+    .pc:hover .chips span:hover,
+    .pc:hover .chips .live-pill:hover {
       background: var(--inv);
       color: var(--fg)
     }
@@ -1326,6 +1344,7 @@
         n: "01",
         t: "Student Academic Records Management System",
         d: "A full-stack web application that helps an IT department manage student attendance, internal marks, and rankings through separate dashboards for HOD, Staff, and Students.",
+        live: "https://msec-it-dashboard.onrender.com",
         tags: ["Full-Stack", "Python", "MySQL", "Flask", "HTML/CSS", "RBAC"],
         stats: [["3", "role dashboards"], ["100%", "automated grading"], ["Real-Time", "attendance tracking"]],
         flow: ["Role Authentication", "Attendance Logging", "Internal Marks Entry", "Rank Calculation", "Role Dashboards"],
@@ -1362,12 +1381,12 @@
       }
     ];
 
-    $("#pj").innerHTML = P.map((p, i) => `<div class="pc rv" data-i="${i}" tabindex="0" role="button"><div class="n">${p.n}</div><div><h3>${p.t}</h3><p>${p.d}</p><div class="chips">${p.tags.map(t => `<span>${t}</span>`).join("")}</div></div><div class="arr">→</div></div>`).join("");
+    $("#pj").innerHTML = P.map((p, i) => `<div class="pc rv" data-i="${i}" tabindex="0" role="button"><div class="n">${p.n}</div><div><h3>${p.t}</h3><p>${p.d}</p><div class="chips">${p.tags.map(t => `<span>${t}</span>`).join("")}${p.live ? `<a class="live-pill" href="${p.live}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Live Demo ↗</a>` : ''}</div></div><div class="arr">→</div></div>`).join("");
 
     const modal = $("#modal"), mb = $("#mb");
     function openP(i) {
       const p = P[i];
-      mb.innerHTML = `<button class="btn-i x" onclick="closeP()" aria-label="Close">✕</button><p class="lbl">Project ${p.n}</p><h3>${p.t}</h3><p style="color:var(--mut)">${p.d}</p><div class="mst">${p.stats.map(s => `<div><strong>${s[0]}</strong><small>${s[1]}</small></div>`).join("")}</div><h4>Workflow</h4><div class="flow">${p.flow.map(f => `<span>${f}</span>`).join("<i>→</i>")}</div><h4>What I did</h4><ul>${p.pts.map(x => `<li>${x}</li>`).join("")}</ul><h4>Stack</h4><div class="chips">${p.tags.map(t => `<span>${t}</span>`).join("")}</div><div class="cta"><a class="b f" href="https://github.com/" target="_blank" rel="noopener">View on GitHub ↗</a></div>`;
+      mb.innerHTML = `<button class="btn-i x" onclick="closeP()" aria-label="Close">✕</button><p class="lbl">Project ${p.n}</p><h3>${p.t}</h3><p style="color:var(--mut)">${p.d}</p><div class="mst">${p.stats.map(s => `<div><strong>${s[0]}</strong><small>${s[1]}</small></div>`).join("")}</div><h4>Workflow</h4><div class="flow">${p.flow.map(f => `<span>${f}</span>`).join("<i>→</i>")}</div><h4>What I did</h4><ul>${p.pts.map(x => `<li>${x}</li>`).join("")}</ul><h4>Stack</h4><div class="chips">${p.tags.map(t => `<span>${t}</span>`).join("")}</div><div class="cta">${p.live ? `<a class="b f" href="${p.live}" target="_blank" rel="noopener">Live Demo ↗</a>` : ''}<a class="b${p.live ? '' : ' f'}" href="${p.github || 'https://github.com/'}" target="_blank" rel="noopener">View on GitHub ↗</a></div>`;
       modal.classList.add("open");
       document.body.style.overflow = "hidden";
     }
