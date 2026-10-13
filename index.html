@@ -13,6 +13,8 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 :root[data-theme="dark"]{--bg:#000;--fg:#fff;--mut:#9a9a9a;--line:#262626;--card:#0c0c0c;--card2:#161616;--inv:#000}
 html{scroll-behavior:smooth;scroll-padding-top:calc(90px + env(safe-area-inset-top,0px))}
 *{box-sizing:border-box;margin:0;padding:0}
+::selection{background:var(--fg);color:var(--inv)}
+::-moz-selection{background:var(--fg);color:var(--inv)}
 body{background:var(--bg);color:var(--fg);font:16px/1.65 Inter,system-ui,sans-serif;overflow-x:hidden;transition:background .4s,color .4s}
 h1,h2,h3,.sg{font-family:'Space Grotesk',Inter,system-ui,sans-serif;letter-spacing:-.02em}
 a{color:inherit;text-decoration:none}
@@ -23,11 +25,9 @@ h2{font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;margin-bottom:40px}
 /* NAV */
 nav{position:fixed;top:calc(16px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:6px;padding:6px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:padding .4s,transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .4s;animation:drop .9s cubic-bezier(.2,.8,.2,1) both}
 @keyframes drop{from{transform:translate(-50%,-90px);opacity:0}}
-nav.sc{box-shadow:0 10px 40px rgba(128,128,128,.25)}
-.logo{width:40px;height:40px;border-radius:50%;background:var(--fg);color:var(--inv);display:grid;place-items:center;font-weight:700;transition:transform .5s}
-.logo:hover{transform:rotate(360deg)}
+.brand{display:none !important}
 .links{position:relative;display:flex}
-.links a{position:relative;z-index:1;padding:9px 16px;font-size:.88rem;border-radius:999px;color:var(--mut);transition:color .3s}
+.links a{position:relative;z-index:1;padding:9px 16px;font-size:.88rem;border-radius:999px;color:var(--mut);transition:color .3s;white-space:nowrap}
 .links a.on,.links a:hover{color:var(--inv)}
 #pill{position:absolute;top:0;left:0;height:100%;width:0;background:var(--fg);border-radius:999px;transition:transform .45s cubic-bezier(.3,1.3,.5,1),width .45s cubic-bezier(.3,1.3,.5,1);z-index:0}
 .btn-i{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--fg);cursor:pointer;font-size:1rem;transition:.3s}
@@ -35,25 +35,13 @@ nav.sc{box-shadow:0 10px 40px rgba(128,128,128,.25)}
 #burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px}
 #burger i{display:block;width:16px;height:2px;background:currentColor;transition:.4s}
 #burger.x i:nth-child(1){transform:translateY(7px) rotate(45deg)}#burger.x i:nth-child(2){opacity:0}#burger.x i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-#menu{position:fixed;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;justify-content:center;padding:40px;clip-path:circle(0 at calc(100% - 50px) 40px);transition:clip-path .7s cubic-bezier(.7,0,.2,1)}
-#menu.open{clip-path:circle(150% at calc(100% - 50px) 40px)}
+#menu{position:fixed;inset:0;background:var(--bg);z-index:90;display:none;flex-direction:column;justify-content:center;padding:40px;clip-path:circle(0 at calc(100% - 50px) 40px);transition:clip-path .7s cubic-bezier(.7,0,.2,1)}
+#menu.open{display:flex;clip-path:circle(150% at calc(100% - 50px) 40px)}
 #menu a{font:700 clamp(2.2rem,10vw,3.5rem)/1.25 'Space Grotesk',sans-serif;transform:translateY(30px);opacity:0;transition:.6s}
 #menu.open a{transform:none;opacity:1}
-#menu.open a:nth-child(2){transition-delay:.1s}#menu.open a:nth-child(3){transition-delay:.15s}#menu.open a:nth-child(4){transition-delay:.2s}#menu.open a:nth-child(5){transition-delay:.25s}#menu.open a:nth-child(6){transition-delay:.3s}
-.m-theme-box{margin-top:32px;transform:translateY(30px);opacity:0;transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .6s;transition-delay:.35s}
-#menu.open .m-theme-box{transform:none;opacity:1}
-.m-theme-title{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-bottom:12px;font-weight:500}
-.m-theme-row{display:flex;gap:12px;flex-wrap:wrap}
-.m-theme-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;font:500 .95rem 'Space Grotesk',Inter,sans-serif;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;border:1.5px solid transparent}
-.m-theme-btn:active{transform:scale(.96)}
-.m-theme-btn .chk{font-size:.85rem;font-weight:700;margin-left:4px}
-.m-dark-btn{background:#0a0a0a;color:#fff;border-color:#333}
-.m-dark-btn.active{border-color:#fff;box-shadow:0 0 0 2px #fff}
-.m-light-btn{background:#f5f5f5;color:#000;border-color:#ccc}
-.m-light-btn.active{border-color:#000;box-shadow:0 0 0 2px #000}
-.m-swatch{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none}
-.dark-swatch{background:#000;border:1.5px solid #fff}
-.light-swatch{background:#fff;border:1.5px solid #000}
+#menu.open a:nth-child(2){transition-delay:.1s}#menu.open a:nth-child(3){transition-delay:.15s}#menu.open a:nth-child(4){transition-delay:.2s}
+.mob-lbl{display:none}
+.desk-lbl{display:inline}
 /* HERO */
 #home{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:130px;position:relative}
 .dot{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.82rem;color:var(--mut);width:max-content;margin-bottom:28px}
@@ -141,9 +129,48 @@ footer{max-width:1100px;margin:80px auto 0;padding:30px 24px calc(30px + env(saf
 #toast{position:fixed;bottom:calc(30px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,120px);background:var(--fg);color:var(--inv);padding:12px 24px;border-radius:999px;z-index:300;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 #toast.s{transform:translate(-50%,0)}
 .rv{opacity:0;transform:translateY(40px);transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}
-@media(max-width:820px){.links,.nav-x{display:none}#burger{display:flex}.g2,.ct,.ed{grid-template-columns:1fr}.sk{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.pc{grid-template-columns:1fr;padding:24px}.pc .n{font-size:2rem}.arr{display:none}.mst{grid-template-columns:1fr}}
-@keyframes dropm{from{transform:translateY(-90px);opacity:0}}
-@media(max-width:820px){section{padding:84px 18px 20px}nav{left:auto;right:16px;transform:none;animation-name:dropm}#nav #theme{display:none}#home{min-height:auto;padding-top:110px}.dot{max-width:100%;font-size:.76rem}.stats{margin-top:40px}.stats div{padding:16px 14px}.mq{margin-top:36px}h2{margin-bottom:26px}.cta .b{flex:1;justify-content:center;padding:14px 18px}.card{padding:20px}.ci{padding:14px;gap:12px}.ci span{min-width:0;overflow-wrap:anywhere}.ci:hover{transform:none}.mb{border-radius:20px}.x{top:12px;right:12px}.mb h3{padding-right:44px}.tl{padding-left:22px;gap:14px}.tl .card{padding:16px 18px}.tl .card::before{left:-31px;top:22px}.tl h3{font-size:1.02rem;margin:2px 0 8px}.tl li:nth-child(n+2){display:none}.tl li{margin-bottom:0}.ed{margin-top:22px;gap:14px}.ed .card:nth-child(2){display:none}footer{flex-direction:column;text-align:center;margin-top:50px}}
+
+/* RESPONSIVE */
+@media(max-width:820px){
+  .nav-desk-only{display:none !important}
+  .desk-lbl{display:none !important}
+  .mob-lbl{display:inline !important}
+  .brand{display:none !important}
+  #burger{display:none !important}
+  nav{left:50%;right:auto;transform:translateX(-50%);display:flex;justify-content:center;align-items:center;padding:5px;width:max-content;max-width:calc(100vw - 32px);animation-name:drop}
+  .links{display:flex}
+  .links a{padding:8px 16px;font-size:.84rem}
+  section{padding:84px 18px 20px}
+  #home{min-height:auto;padding-top:110px}
+  .dot{max-width:100%;font-size:.76rem}
+  .stats{margin-top:40px;grid-template-columns:repeat(2,1fr)}
+  .stats div{padding:16px 14px}
+  .mq{margin-top:36px}
+  h2{margin-bottom:26px}
+  .cta .b{flex:1;justify-content:center;padding:14px 18px}
+  .g2,.ct,.ed{grid-template-columns:1fr}
+  .sk{grid-template-columns:1fr}
+  .card{padding:20px}
+  .pc{grid-template-columns:1fr;padding:24px}
+  .pc .n{font-size:2rem}
+  .arr{display:none}
+  .mst{grid-template-columns:1fr}
+  .ci{padding:14px;gap:12px}
+  .ci span{min-width:0;overflow-wrap:anywhere}
+  .ci:hover{transform:none}
+  .mb{border-radius:20px}
+  .x{top:12px;right:12px}
+  .mb h3{padding-right:44px}
+  .tl{padding-left:22px;gap:14px}
+  .tl .card{padding:16px 18px}
+  .tl .card::before{left:-31px;top:22px}
+  .tl h3{font-size:1.02rem;margin:2px 0 8px}
+  .tl li:nth-child(n+2){display:none}
+  .tl li{margin-bottom:0}
+  .ed{margin-top:22px;gap:14px}
+  .ed .card:nth-child(2){display:none}
+  footer{flex-direction:column;text-align:center;margin-top:50px}
+}
 @media(hover:none){.pc:hover::before{transform:scaleX(0)}.pc:hover>*{color:var(--fg)}.pc:hover p,.pc:hover .n{color:var(--mut)}.pc:hover .arr{transform:none}.pc:active{transform:scale(.98)}.card:hover{transform:none;border-color:var(--line)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
@@ -153,36 +180,20 @@ footer{max-width:1100px;margin:80px auto 0;padding:30px 24px calc(30px + env(saf
 <nav id="nav">
   <div class="links" id="links">
     <span id="pill"></span>
-    <a href="#home" class="on">Home</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
+    <a href="#home" class="on">Home</a>
+    <a href="#about" class="nav-desk-only">About</a>
+    <a href="#projects"><span class="desk-lbl">Projects</span><span class="mob-lbl">Project</span></a>
+    <a href="#experience" class="nav-desk-only">Experience</a>
+    <a href="#contact">Contact</a>
   </div>
-  <button class="btn-i" id="theme" aria-label="Toggle theme">◐</button>
-  <button class="btn-i" id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
 </nav>
-<div id="menu">
-  <a href="#home">Home</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
-  <div class="m-theme-box">
-    <p class="m-theme-title">Theme</p>
-    <div class="m-theme-row">
-      <button type="button" class="m-theme-btn m-dark-btn" id="mThemeDark" aria-label="Black Theme">
-        <span class="m-swatch dark-swatch"></span>
-        <span class="m-text">Black Theme</span>
-        <span class="chk"></span>
-      </button>
-      <button type="button" class="m-theme-btn m-light-btn" id="mThemeLight" aria-label="White Theme">
-        <span class="m-swatch light-swatch"></span>
-        <span class="m-text">White Theme</span>
-        <span class="chk"></span>
-      </button>
-    </div>
-  </div>
-</div>
 
 <section id="home">
   <div class="dot"><b></b>Open to Data Analyst internships</div>
   <h1><span><i>Mohamed</i></span><span><i>Nihmathullah</i></span></h1>
   <p class="role">I turn raw data into <b id="type"></b></p>
   <p class="hp">B.Tech IT student (Class of 2028) building end-to-end analytics pipelines with SQL, Python and Power BI — from messy tables to decisions people can act on.</p>
-  <div class="cta"><a href="#projects" class="b f">View Projects →</a><a href="#contact" class="b">Let's Talk</a></div>
+  <div class="cta"><a href="Resume_nihmath.pdf" target="_blank" rel="noopener" class="b f">View Resume ↗</a><a href="#contact" class="b">Let's Talk</a></div>
   <div class="stats">
     <div><strong data-n="99" data-s="%">0</strong><small>fewer data inconsistencies</small></div>
     <div><strong data-n="3000" data-s="+">0</strong><small>records processed</small></div>
@@ -237,12 +248,14 @@ footer{max-width:1100px;margin:80px auto 0;padding:30px 24px calc(30px + env(saf
       <a class="ci" href="https://github.com/" target="_blank" rel="noopener"><em>↗</em><span><small>GitHub</small>View repositories</span></a>
       <div class="ci" style="cursor:default"><em>⌖</em><span><small>Location</small>Ramanathapuram, Tamil Nadu, India</span></div>
     </div>
-    <form class="card rv" id="form">
-      <div class="fl"><input id="fn" placeholder=" " required><label for="fn">Your name</label></div>
-      <div class="fl"><input id="fe" type="email" placeholder=" " required><label for="fe">Your email</label></div>
-      <div class="fl"><input id="fs" placeholder=" "><label for="fs">Subject</label></div>
-      <div class="fl"><textarea id="fm" rows="5" placeholder=" " required></textarea><label for="fm">Message</label></div>
-      <button class="b f" type="submit" style="justify-content:center">Send message →</button>
+    <form class="card rv" id="form" action="https://formsubmit.co/nihmathuu@gmail.com" method="POST">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <div class="fl"><input id="fn" name="name" placeholder=" " required><label for="fn">Your name</label></div>
+      <div class="fl"><input id="fe" name="email" type="email" placeholder=" " required><label for="fe">Your email</label></div>
+      <div class="fl"><input id="fs" name="_subject" placeholder=" "><label for="fs">Subject</label></div>
+      <div class="fl"><textarea id="fm" name="message" rows="5" placeholder=" " required></textarea><label for="fm">Message</label></div>
+      <button class="b f" id="fsub" type="submit" style="justify-content:center">Send message →</button>
     </form>
   </div>
 </section>
@@ -253,93 +266,162 @@ footer{max-width:1100px;margin:80px auto 0;padding:30px 24px calc(30px + env(saf
 
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
 // projects
 const P=[
-{n:"01",t:"E-Commerce Data Analysis",d:"A 6-table relational MySQL database, a full Pandas ETL workflow and Power BI dashboards.",tags:["MySQL","Python","Pandas","Power BI","DAX"],
- stats:[["99%","fewer data inconsistencies"],["3,000+","records cleaned"],["30+","SQL queries"]],
- flow:["Raw data","Pandas ETL","Validation checks","6-table MySQL","30+ SQL queries","Power BI"],
- pts:["Designed a <b>6-table relational MySQL database</b> and ran a full Python (Pandas) ETL workflow, verified through post-cleaning validation checks.","Wrote <b>30+ SQL queries</b> using joins, aggregations and GROUP BY to deliver sales, customer and product insights across <b>8 business areas</b>.","Built interactive <b>Power BI dashboards</b> with DAX measures, drill-through pages and cross-filtering to surface business-ready KPIs for stakeholder review."]},
-{n:"02",t:"Customer Behavior Data Analysis",d:"Purchasing patterns and customer segments, explained in a way non-technical stakeholders can use.",tags:["SQL","Python","EDA","Power BI"],
- stats:[["~50","customer records"],["SQL","extraction & aggregation"],["EDA","in Python"]],
- flow:["SQL extraction","Aggregation","EDA in Python","Power BI visuals","Stakeholder insights"],
- pts:["Identified key behavioral and purchasing patterns across <b>~50 customer records</b> by extracting and aggregating data with SQL and performing <b>exploratory data analysis</b> in Python.","Surfaced actionable customer segments and purchase trends by designing <b>Power BI visuals</b> and translating findings for non-technical stakeholders, supporting dashboard adoption for decision-making."]}];
+{
+  n:"01",
+  t:"Student Academic Records Management System",
+  d:"A full-stack web application that helps an IT department manage student attendance, internal marks, and rankings through separate dashboards for HOD, Staff, and Students.",
+  tags:["Full-Stack","Python","MySQL","Flask","HTML/CSS","RBAC"],
+  stats:[["3","role dashboards"],["100%","automated grading"],["Real-Time","attendance tracking"]],
+  flow:["Role Authentication","Attendance Logging","Internal Marks Entry","Rank Calculation","Role Dashboards"],
+  pts:[
+    "Developed a <b>role-based full-stack web application</b> for an IT department featuring separate, secure dashboards for HOD, Staff, and Students.",
+    "Streamlined academic operations by automating <b>student attendance tracking</b>, <b>internal assessment marks computation</b>, and <b>dynamic departmental rankings</b>.",
+    "Engineered a normalized <b>MySQL database schema</b> and backend business logic ensuring data consistency, strict role-based access control, and reliable record exports."
+  ]
+},
+{
+  n:"02",
+  t:"E-Commerce Data Analysis",
+  d:"A 6-table relational MySQL database, a full Pandas ETL workflow and Power BI dashboards.",
+  tags:["MySQL","Python","Pandas","Power BI","DAX"],
+  stats:[["99%","fewer data inconsistencies"],["3,000+","records cleaned"],["30+","SQL queries"]],
+  flow:["Raw data","Pandas ETL","Validation checks","6-table MySQL","30+ SQL queries","Power BI"],
+  pts:[
+    "Designed a <b>6-table relational MySQL database</b> and ran a full Python (Pandas) ETL workflow, verified through post-cleaning validation checks.",
+    "Wrote <b>30+ SQL queries</b> using joins, aggregations and GROUP BY logic against the relational database.",
+    "Built interactive <b>Power BI dashboards</b> with DAX measures, drill-through pages and cross-filtering to surface business-ready KPIs for stakeholder review."
+  ]
+},
+{
+  n:"03",
+  t:"Customer Behavior Data Analysis",
+  d:"Purchasing patterns and customer segments, explained in a way non-technical stakeholders can use.",
+  tags:["SQL","Python","EDA","Power BI"],
+  stats:[["~50","customer records"],["SQL","extraction & aggregation"],["EDA","in Python"]],
+  flow:["SQL extraction","Aggregation","EDA in Python","Power BI visuals","Stakeholder insights"],
+  pts:[
+    "Identified key behavioral and purchasing patterns across <b>~50 customer records</b> by extracting and aggregating data with SQL and performing <b>exploratory data analysis</b> in Python.",
+    "Surfaced actionable customer segments and purchase trends by designing <b>Power BI visuals</b> and translating findings for non-technical stakeholders, supporting dashboard adoption for decision-making."
+  ]
+}
+];
+
 $("#pj").innerHTML=P.map((p,i)=>`<div class="pc rv" data-i="${i}" tabindex="0" role="button"><div class="n">${p.n}</div><div><h3>${p.t}</h3><p>${p.d}</p><div class="chips">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div></div><div class="arr">→</div></div>`).join("");
+
 const modal=$("#modal"),mb=$("#mb");
-function openP(i){const p=P[i];mb.innerHTML=`<button class="btn-i x" onclick="closeP()" aria-label="Close">✕</button><p class="lbl">Project ${p.n}</p><h3>${p.t}</h3><p style="color:var(--mut)">${p.d}</p><div class="mst">${p.stats.map(s=>`<div><strong>${s[0]}</strong><small>${s[1]}</small></div>`).join("")}</div><h4>Workflow</h4><div class="flow">${p.flow.map(f=>`<span>${f}</span>`).join("<i>→</i>")}</div><h4>What I did</h4><ul>${p.pts.map(x=>`<li>${x}</li>`).join("")}</ul><h4>Stack</h4><div class="chips">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div><div class="cta"><a class="b f" href="https://github.com/" target="_blank" rel="noopener">View on GitHub ↗</a></div>`;modal.classList.add("open");document.body.style.overflow="hidden"}
+function openP(i){
+  const p=P[i];
+  mb.innerHTML=`<button class="btn-i x" onclick="closeP()" aria-label="Close">✕</button><p class="lbl">Project ${p.n}</p><h3>${p.t}</h3><p style="color:var(--mut)">${p.d}</p><div class="mst">${p.stats.map(s=>`<div><strong>${s[0]}</strong><small>${s[1]}</small></div>`).join("")}</div><h4>Workflow</h4><div class="flow">${p.flow.map(f=>`<span>${f}</span>`).join("<i>→</i>")}</div><h4>What I did</h4><ul>${p.pts.map(x=>`<li>${x}</li>`).join("")}</ul><h4>Stack</h4><div class="chips">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div><div class="cta"><a class="b f" href="https://github.com/" target="_blank" rel="noopener">View on GitHub ↗</a></div>`;
+  modal.classList.add("open");
+  document.body.style.overflow="hidden";
+}
 function closeP(){modal.classList.remove("open");document.body.style.overflow=""}
 $$(".pc").forEach(c=>{c.onclick=()=>openP(c.dataset.i);c.onkeydown=e=>e.key==="Enter"&&openP(c.dataset.i)});
 modal.onclick=e=>e.target===modal&&closeP();addEventListener("keydown",e=>e.key==="Escape"&&closeP());
+
 // marquee
 const sk=["Python","SQL","MySQL","Power BI","Tableau","DAX","Pandas","Excel","ETL","EDA","Data Storytelling"];
 $("#mq").innerHTML=[...sk,...sk].map(s=>`<span>${s}</span>`).join("");
+
 // typing
 const w=["clear insights.","SQL pipelines.","Power BI dashboards.","business decisions."];let wi=0,ci=0,del=false;
 (function ty(){const el=$("#type"),cur=w[wi];el.textContent=cur.slice(0,ci);if(!del&&ci===cur.length){del=true;return setTimeout(ty,1600)}if(del&&ci===0){del=false;wi=(wi+1)%w.length}ci+=del?-1:1;setTimeout(ty,del?35:70)})();
+
 // nav pill
 const links=$$("#links a"),pill=$("#pill");
-function mv(a){pill.style.width=a.offsetWidth+"px";pill.style.transform=`translateX(${a.offsetLeft}px)`}
-let active=links[0];mv(active);
-links.forEach(a=>{a.onmouseenter=()=>mv(a);a.onclick=()=>{active=a}});
+function mv(a){
+  if(!a || a.offsetWidth === 0) return;
+  pill.style.width=a.offsetWidth+"px";
+  pill.style.transform=`translateX(${a.offsetLeft}px)`;
+}
+let active=links[0];
+mv(active);
+links.forEach(a=>{
+  a.onmouseenter=()=>mv(a);
+  a.onclick=()=>{
+    active=a;
+    links.forEach(l=>l.classList.toggle("on",l===a));
+    mv(a);
+  };
+});
 $("#links").onmouseleave=()=>mv(active);
-addEventListener("resize",()=>mv(active));
+
+function refreshPill(){
+  const isMobile=window.innerWidth<=820;
+  if(isMobile && (active.getAttribute("href")==="#about" || active.getAttribute("href")==="#experience")){
+    active=active.getAttribute("href")==="#about" ? links[0] : links.find(l=>l.getAttribute("href")==="#projects");
+  }
+  mv(active);
+}
+addEventListener("resize",refreshPill);
+addEventListener("load",refreshPill);
+
+const secFallback={
+  about:"#home",
+  experience:"#projects"
+};
 const secs=["home","about","projects","experience","contact"].map(id=>document.getElementById(id));
-const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const a=links.find(l=>l.getAttribute("href")==="#"+e.target.id);links.forEach(l=>l.classList.toggle("on",l===a));active=a;mv(a)}}),{rootMargin:"-45% 0px -50% 0px"});
-secs.forEach(s=>so.observe(s));
+const so=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){
+    const isMobile=window.innerWidth<=820;
+    let targetHref="#"+e.target.id;
+    if(isMobile && secFallback[e.target.id]){
+      targetHref=secFallback[e.target.id];
+    }
+    const a=links.find(l=>l.getAttribute("href")===targetHref && l.offsetWidth>0);
+    if(a){
+      links.forEach(l=>l.classList.toggle("on",l===a));
+      active=a;
+      mv(a);
+    }
+  }
+}),{rootMargin:"-45% 0px -50% 0px"});
+secs.forEach(s=>s&&so.observe(s));
+
 // scroll
 addEventListener("scroll",()=>{const h=document.documentElement;$("#bar").style.width=(scrollY/(h.scrollHeight-innerHeight)*100)+"%";$("#nav").classList.toggle("sc",scrollY>40)},{passive:true});
-// menu
-const bg=$("#burger"),mn=$("#menu");
-const tg=()=>{bg.classList.toggle("x");mn.classList.toggle("open");document.body.style.overflow=mn.classList.contains("open")?"hidden":""};
-bg.onclick=tg;$$("#menu a").forEach(a=>a.onclick=tg);
-// theme
-function applyTheme(t){
-  document.documentElement.dataset.theme=t;
-  try{localStorage.setItem("th_theme",t)}catch(e){}
-  const isDark=t==="dark";
-  const dBtn=$("#mThemeDark"),lBtn=$("#mThemeLight"),deskBtn=$("#theme");
-  if(dBtn){
-    dBtn.classList.toggle("active",isDark);
-    dBtn.setAttribute("aria-pressed",isDark);
-    const c=dBtn.querySelector(".chk");if(c)c.textContent=isDark?" ✓":"";
-  }
-  if(lBtn){
-    lBtn.classList.toggle("active",!isDark);
-    lBtn.setAttribute("aria-pressed",!isDark);
-    const c=lBtn.querySelector(".chk");if(c)c.textContent=!isDark?" ✓":"";
-  }
-  if(deskBtn){
-    deskBtn.textContent=isDark?"☼":"◐";
-    deskBtn.setAttribute("aria-label",isDark?"Switch to White Theme":"Switch to Black Theme");
-  }
-}
-let currentTheme="light";
-try{currentTheme=localStorage.getItem("th_theme")||"light"}catch(e){currentTheme="light"}
-applyTheme(currentTheme);
 
-$("#theme").onclick=()=>{
-  const cur=document.documentElement.dataset.theme==="dark"?"dark":"light";
-  const nxt=cur==="dark"?"light":"dark";
-  applyTheme(nxt);
-  toast(nxt==="dark"?"Switched to Black Theme ✓":"Switched to White Theme ✓");
-};
-const mDark=$("#mThemeDark");
-if(mDark)mDark.onclick=()=>{
-  applyTheme("dark");
-  toast("Switched to Black Theme ✓");
-};
-const mLight=$("#mThemeLight");
-if(mLight)mLight.onclick=()=>{
-  applyTheme("light");
-  toast("Switched to White Theme ✓");
-};
 // reveal + counters
 const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");ro.unobserve(e.target)}}),{threshold:.12});
 $$(".rv").forEach(el=>ro.observe(el));
 $$("[data-n]").forEach(el=>{const t=+el.dataset.n,d=+el.dataset.d||0,s=el.dataset.s||"",t0=performance.now();(function f(n){const k=Math.min((n-t0)/1800,1),v=t*(1-Math.pow(1-k,3));el.textContent=(d?v.toFixed(d):Math.round(v).toLocaleString())+s;k<1&&requestAnimationFrame(f)})(t0)});
+
 // contact
 const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("s");setTimeout(()=>t.classList.remove("s"),2400)};
 $("#copy").onclick=()=>{try{navigator.clipboard.writeText("nihmathuu@gmail.com").then(()=>toast("Email copied ✓"),()=>toast("nihmathuu@gmail.com"))}catch(e){toast("nihmathuu@gmail.com")}};
-$("#form").onsubmit=e=>{e.preventDefault();const b=`Hi Nihmath,%0D%0A%0D%0A${encodeURIComponent($("#fm").value)}%0D%0A%0D%0A— ${encodeURIComponent($("#fn").value)} (${encodeURIComponent($("#fe").value)})`;location.href=`mailto:nihmathuu@gmail.com?subject=${encodeURIComponent($("#fs").value||"Portfolio enquiry")}&body=${b}`;toast("Opening your email app…")};
+const form=$("#form"),fBtn=$("#fsub");
+form.onsubmit=async e=>{
+  e.preventDefault();
+  const name=$("#fn").value.trim(),email=$("#fe").value.trim(),subject=$("#fs").value.trim()||`Portfolio enquiry from ${name}`,message=$("#fm").value.trim();
+  const origBtnText=fBtn.innerHTML;
+  fBtn.disabled=true;
+  fBtn.textContent="Sending…";
+  toast("Sending message…");
+  try{
+    const res=await fetch("https://formsubmit.co/ajax/nihmathuu@gmail.com",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({name,email,_subject:subject,message,_replyto:email,_captcha:"false",_template:"table"})
+    });
+    const data=await res.json();
+    if(res.ok||data.success==="true"||data.success===true){
+      toast("Message sent to nihmathuu@gmail.com! ✓");
+      form.reset();
+    }else{
+      throw new Error(data.message||"Failed to send");
+    }
+  }catch(err){
+    toast("Opening email app…");
+    const mailBody=`Hi Nihmath,\n\n${message}\n\n— ${name} (${email})`;
+    location.href=`mailto:nihmathuu@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+  }finally{
+    fBtn.disabled=false;
+    fBtn.innerHTML=origBtnText;
+  }
+};
 </script>
 </body>
 </html>
